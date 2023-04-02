@@ -1,0 +1,48 @@
+name: "Build"
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master # on merge to master - since master is protected
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@master
+
+# ========================== Compiling pdf ======================
+
+    - name: Install dependencies
+      shell: bash
+      run: |
+        sudo apt-get update 
+        sudo apt-get install -y texlive-latex-recommended 
+        sudo apt-get install -y texlive-latex-extra
+        sudo apt-get install -y texlive-xetex
+        sudo apt-get install -y texlive-fonts-recommended
+        sudo apt-get install -y texlive-bibtex-extra
+        sudo apt-get install -y texlive-binaries
+        sudo apt-get install -y ttf-mscorefonts-installer
+        sudo apt-get install -y fonts-tlwg-mono-ttf
+        sudo apt-get install -y python3-pygments
+    - name: Build 
+      shell: bash
+      working-directory: ./scripts/
+      run: ./build.sh *.tex
+
+    - name: Md5sum
+      shell: bash
+      working-directory: ./build/
+      run: |
+        md5sum *
+        ls -la
+    - uses: actions/upload-artifact@v3
+      with:
+        name: artifacts
+        path: build//*
