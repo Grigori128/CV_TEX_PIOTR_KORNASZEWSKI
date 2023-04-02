@@ -4,15 +4,12 @@ cd ..
 
 for i in $1; do
     echo "Compiling $i tex file"
-    xelatex -shell-escape -synctex=1 -interaction=nonstopmode -no-pdf  $i
-    xelatex -shell-escape -synctex=1 -interaction=nonstopmode -no-pdf  $i
-    xelatex -shell-escape -synctex=1 -interaction=nonstopmode -no-pdf  $i 
-    #lualatex -shell-escape -interaction=nonstopmode $i
-    #lualatex -shell-escape -interaction=nonstopmode $i
-    #lualatex -shell-escape -interaction=nonstopmode $i
+    xelatex -shell-escape -synctex=1 -interaction=nonstopmode  $i
+    xelatex -shell-escape -synctex=1 -interaction=nonstopmode  $i
+    xelatex -shell-escape -synctex=1 -interaction=nonstopmode  $i 
 done
 
-xdvipdfmx *.xdv
+
 
 for F in *.pdf
 do
